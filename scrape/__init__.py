@@ -16,7 +16,7 @@ def get_remote_tgz_files(base_url):
     return urls
 
 
-def download_files(urls, dest_dir):
+def download_extract_files(urls, dest_dir):
     if not os.path.exists(dest_dir):
         os.mkdir(dest_dir)
 

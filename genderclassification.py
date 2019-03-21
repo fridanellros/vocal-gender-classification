@@ -21,7 +21,5 @@ if __name__ == '__main__':
         sys.exit(1)'''
 
     urls = get_remote_tgz_files(SOURCE_URL)
-    download_files(urls, DATA_DIR)
-
-      	
+    download_extract_files(urls, DATA_DIR)
 
