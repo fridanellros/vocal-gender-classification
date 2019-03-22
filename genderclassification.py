@@ -1,6 +1,7 @@
 import os
 import sys
 from scrape import get_remote_tgz_files, download_extract_files
+from parse import paths, parse_readme
 from pathlib import Path
 import sqlite3
 
@@ -22,29 +23,30 @@ if __name__ == '__main__':
         print ARGCHECK
         sys.exit(1)'''
 
+    data_folder = Path(DATA_DIR)
+
     #urls = get_remote_tgz_files(SOURCE_URL)
-    #download_extract_files(urls, DATA_DIR)
+    #download_extract_files(urls, data_folder)
 
     conn = sqlite3.connect('example.db')
     db = conn.cursor()
     db.execute('''DROP TABLE IF EXISTS features''')
     db.execute('''CREATE TABLE features
-             (file text unique, path text, female integer, rate integer, 
-                format integer, age text, language text, dialect text)''')
+             (file text unique, path text, female integer, 
+                age text, language text, dialect text)''')
 
-    samples = os.listdir(DATA_DIR)
+    samples = os.listdir(data_folder)
     for sample in samples:
-        data_folder = Path(DATA_DIR)
-        wav_folder = data_folder / sample / "wav"
-        readme = data_folder / sample / "etc" / "README"
+        (wav_folder, readme_path) = paths(data_folder, sample)
+        meta = parse_readme(readme_path)
 
         wavs = os.listdir(wav_folder)
         for wav in wavs:
             db.execute('''INSERT INTO features VALUES
-             (?,?,?,?,?,?,?,?)''', (str(wav), str(wav_folder), 0, 0, 0, '', '', ''))
+             (?,?,?,?,?,?)''', (wav, str(wav_folder), 0, '', '', ''))
 
-        print(os.listdir(wav_folder))
-        print(readme)
+        #print(os.listdir(wav_folder))
+        #print(readme)
         a = db.execute('''SELECT * FROM features''')
         break
 
