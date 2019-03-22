@@ -25,6 +25,7 @@ if __name__ == '__main__':
 
     data_folder = Path(DATA_DIR)
 
+    ## --- SCRAPE FOR FILES ---
     #urls = get_remote_tgz_files(SOURCE_URL)
     #download_extract_files(urls, data_folder)
 
@@ -43,11 +44,18 @@ if __name__ == '__main__':
         wavs = os.listdir(wav_folder)
         for wav in wavs:
             db.execute('''INSERT INTO features VALUES
-             (?,?,?,?,?,?)''', (wav, str(wav_folder), 0, '', '', ''))
+             (?,?,?,?,?,?)''', 
+                (wav[:-4], 
+                str(wav_folder), 
+                meta['Gender'] == 'Female', 
+                meta['Age Range'], 
+                meta['Language'], 
+                meta['Pronunciation dialect']))
 
         #print(os.listdir(wav_folder))
         #print(readme)
-        a = db.execute('''SELECT * FROM features''')
+        db.execute('''SELECT file, female, age, language, dialect FROM features''')
+        print(db.fetchall())
         break
 
         
