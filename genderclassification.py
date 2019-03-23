@@ -52,8 +52,6 @@ if __name__ == '__main__':
                 meta['Language'], 
                 meta['Pronunciation dialect']))
 
-        #print(os.listdir(wav_folder))
-        #print(readme)
         db.execute('''SELECT file, female, age, language, dialect FROM features''')
         print(db.fetchall())
         break
