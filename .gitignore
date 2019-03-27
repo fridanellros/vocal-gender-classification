@@ -3,4 +3,4 @@ python/
 *.pyc
 *.db
 .ipynb_checkpoints/
-*.db_journal
+*.db-journal
